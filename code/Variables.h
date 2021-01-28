@@ -28,8 +28,8 @@ typedef list* list_p;
 int content_count = 0;              //Keeps track of the number of subjects.
 
 struct creditentials{
-    name_of *teacher;
-    name_of subject;
+    name_of *hoster;
+    name_of *category;
     char **ID;
     char **pass;
     list_p prev, next;
