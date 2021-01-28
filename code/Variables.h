@@ -5,6 +5,8 @@ this header file defines all the global variables to be used throughout the code
 Feel free to change.
 */
 
+#define _VARIABLES_H_
+
 #ifndef _STDIO_H_
 #include <stdio.h>
 #endif //includes stdio.h if not added previously.
@@ -21,11 +23,14 @@ Feel free to change.
 #include <ctype.h>
 #endif //includes ctype.h if not added previously.
 
+#ifndef _STDBOOL_H_
+#include <stdbool.h>
+#endif //includes stdbool.h if not added previously.
+
 //So basically our structure will be called list.
 typedef struct creditentials list;
 typedef char* name_of;
 typedef list* list_p;
-int content_count = 0;              //Keeps track of the number of subjects.
 
 struct creditentials{
     name_of *hoster;
@@ -35,3 +40,7 @@ struct creditentials{
     list_p prev, next;
     int entries;                    //Entries can't be bigger than 10, no matter what.
 };
+
+void print_instructions(void);
+void commands_and_works();
+void  print_command_details(int argument_count, char **argument_variables);
