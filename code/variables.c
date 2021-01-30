@@ -2,5 +2,5 @@
 #include "definitions.h"
 #endif
 
-extern int content_count = 0;
-extern char *FIELDS[] = {"host", "name", "id", "pass"};
+extern int content_count;
+extern char *FIELDS[];

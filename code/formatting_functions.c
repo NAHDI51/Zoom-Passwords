@@ -6,8 +6,8 @@
 int addition_string(char *sentence)
 {
     int i, sum = 0;
-    for(i = 0; sentence[i] != '\0'; i++)
-        sum += (int)sentence[i];
+    for(i = 0; *(sentence+i) != '\0'; i++)
+        sum += (int)(*(sentence+i));
     return sum;
 }
 
@@ -35,7 +35,7 @@ int character_case_compare(char a, char b)     //1 on success, 0 on failure
 char *upper_case(char* sentence)
 {
     int i;
-    for(i = 0; sentence[i] != '\0'; i++) sentence[i] = toupper(sentence[i]);
+    for(i = 0; *(sentence+i) != '\0'; i++) *(sentence+i) = toupper(*(sentence+i));
     return sentence;
 }
 
@@ -54,8 +54,8 @@ void FILL(int quantity, char characters)
 char first_of(char *key)
 {
     int i = 0;
-    while(key[i] == ' ') i++;
-    return key[i];
+    while(*(key+i) == ' ') i++;
+    return *(key+i);
 }
 
  //Breaks the last newline of a sentence.
@@ -67,8 +67,8 @@ void break_new_line(char **sentence){
 int verify_number(char *sentence)
 {
     int i;
-    for(i = 0; sentence[i] != '\0'; i++){
-        if((sentence[i] >= 48 && sentence[i] <= 57) || sentence[i] == ' ')
+    for(i = 0; *(sentence+i) != '\0'; i++){
+        if((*(sentence+i) >= 48 && *(sentence+i) <= 57) || *(sentence+i) == ' ')
             return -1;
     }
     return 1;
@@ -78,9 +78,9 @@ int verify_number(char *sentence)
 char *caps_first(char *sentence)
 {
     int i = 0;
-    while(sentence[i] != '\0'){
-        if(sentence[i-1] == ' ')    //If the following preceeding is a gap, make this cap.
-            sentence[i] = toupper(sentence[i]);
+    while(*(sentence+i) != '\0'){
+        if(*(sentence+i-1) == ' ')    //If the following preceeding is a gap, make this cap.
+            *(sentence+i) = toupper(*(sentence+i));
         i++;
     }
     return sentence;

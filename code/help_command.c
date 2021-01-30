@@ -2,6 +2,8 @@
 #include "definitions.h"
 #endif
 
+char *FIELDS[4] = {"host name", "subject name", "id", "pass"};
+
 //It's very relevant here. Thus, it has its own function to be called.
 void commands_and_works(){
     printf("%-15s adds a password list in this program\n", "add");
@@ -57,7 +59,8 @@ void delete_command_details(){
     printf("=>ID\n\n");
     printf("Field information is the information you have entered on the field.\n\n");
     printf("EXAMPLE:\n");
-    FILL(7, "-");
+    FILL(7, '-');
+    printf("\n\n");
 }
 
 //Prints the specified command into comprehensive details.
