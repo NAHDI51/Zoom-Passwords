@@ -1,8 +1,6 @@
-#ifndef _VARIABLES_H_
-#include "Variables.h"
+#ifndef _DEFINITIONS_H_
+#include "definitions.h"
 #endif
-
-extern int content_count = 0;
 
 int main(int argc, char **argv)
 {
