@@ -4,6 +4,9 @@
 
 int main(int argc, char **argv)
 {
+    //First and foremost, call the global variable allocator functions.
+    allocate_FIELDS();
+
     //Copy out the argv arguments in a multidimensional array. Allocate a multidimensional string with the corresponding 
     //size of each argv[i].
     //Reason: It is recommended not to manipulate the value of argv, as it has the tendency to cause 

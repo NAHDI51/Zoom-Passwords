@@ -75,15 +75,20 @@ int verify_number(char *sentence)
 }
 
 //Caps Locks the first letter of the sentence.
-char *caps_first(char *sentence)
-{
-    int i = 0;
-    while(*(sentence+i) != '\0'){
-        if(*(sentence+i-1) == ' ')    //If the following preceeding is a gap, make this cap.
-            *(sentence+i) = toupper(*(sentence+i));
-        i++;
+//WARNING: ALWAYS SEND ALLOCATED MEMORY IN THIS FUNCTION.
+char *caps_first(char sentence[]){
+    char *copy_sentence = (char*)malloc(sizeof(char) * (strlen(sentence)+1));
+    strcpy(copy_sentence, sentence);
+    
+    copy_sentence[0] = toupper(copy_sentence[0]);
+    for(int i = 1; copy_sentence[i] != '\0'; i++){
+        if(copy_sentence[i-1] == ' '){
+            copy_sentence[i] = toupper(copy_sentence[i]);
+        } else {
+            copy_sentence[i] = tolower(copy_sentence[i]);
+        }
     }
-    return sentence;
+    return copy_sentence;
 }
 
  //Removes the unncesssary spaces at the beginning of a sentenc

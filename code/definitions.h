@@ -27,8 +27,8 @@ Feel free to change.
 #include <stdbool.h>
 #endif //includes stdbool.h if not added previously.
 
-#define HOST_NAME       (0)
-#define SUBJECT_NAME    (1)
+#define SUBJECT_NAME    (0)
+#define HOST_NAME       (1)
 #define ID              (2)
 #define PASS            (3)
 
@@ -48,6 +48,13 @@ struct creditentials{
 void print_instructions(void);
 void commands_and_works();
 void  print_command_details(int argument_count, char **argument_variables);
+
+//As we know, the array cannot be used without proper allocation. Thus, this
+//function allocates the area to be used for the function manually. Use this
+//once and ONLY once.
+
+//functions used for defining some global variables.
+void allocate_FIELDS(void);
 
 //formatting functions
 void FILL(int quantity, char character);                 //Fills a "quantity" of space with a certain "Character".

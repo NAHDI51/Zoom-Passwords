@@ -1,8 +1,10 @@
+//This source code is built to provide the explicit definitions and guidelines for the commands that is to be used in this program.
+
 #ifndef _DEFINITIONS_H_
 #include "definitions.h"
 #endif
 
-char *FIELDS[4] = {"host name", "subject name", "id", "pass"};
+char *FIELDS[4];
 
 //It's very relevant here. Thus, it has its own function to be called.
 void commands_and_works(){
@@ -52,15 +54,39 @@ void delete_command_details(){
     printf("syntax: pass delete \"field\"=\"field_informations\"\n");
     printf("Delete command deletes a specified entry from the list of passwords.\n\n");
     printf("In the given syntax, the field name is the name of one of the following\n");
-    printf("fields you have entered with the add command, except for the password..\n\n");
+    printf("fields you have entered with the add command, except for the password.\n\n");
     printf("FIELDS:\n");
-    printf("=>Host Name\n");
-    printf("=>Subject\n");
-    printf("=>ID\n\n");
+    
+    for(int i = 0; i < 3; i++){
+        printf("=>%s\n", upper_case(FIELDS[i]));
+    }
+
     printf("Field information is the information you have entered on the field.\n\n");
     printf("EXAMPLE:\n");
     FILL(7, '-');
     printf("\n\n");
+    printf("%-13s: %s\n", "SUBJECT NAME", caps_first("mathematics"));
+    FILL(15+strlen("mathematics"),'-');
+    printf("\n");
+    printf("%-13s: %s\n", upper_case(FIELDS[HOST_NAME]), caps_first("Maksudur Rahman"));
+    printf("%-13s: %s\n", upper_case(FIELDS[ID]), "2452 2342 534");
+    printf("%-13s: %s\n", upper_case(FIELDS[PASS]), "23ksnfsd");
+    printf("\n");
+
+    printf("Suppose we have a list looks like this, how can we delete it?\n");
+    printf("You can delete it by the three following commands.\n\n");
+    printf("pass delete \"%s\"=\"%s\"\n", FIELDS[SUBJECT_NAME], caps_first("mathematics"));
+    printf("pass delete \"%s\"=\"%s\"\n", FIELDS[HOST_NAME], caps_first("Maksudur Rahman"));
+    printf("pass delete \"%s\"=\"%s\"\n", FIELDS[SUBJECT_NAME], caps_first("2452 2342 534"));
+    printf("\n");
+    printf("Notes:\n");
+    printf("=>The letters in both FIELD and FIELD INFORMATION are case insensitive, earlier,\n");
+    printf("  if you have typed \"subject name\" instead of \"%s\", it\n  would have worked.\n", FIELDS[SUBJECT_NAME]);
+    printf("=>YOU DON'T NEED TO TYPE IN THE WHOLE FIELD INFORMATION. For instance, typing in\n");
+    printf("  \"math\" instead of \"mathematics\" will fetch up all the entries with the term \n");
+    printf("  \"math\" in it as a field information.\n"); 
+    printf("=>For multiple results fetched for a given command will give you the right to make\n");
+    printf("  a decision. You will be given an index number to enter, to delete the respective.\n");
 }
 
 //Prints the specified command into comprehensive details.
