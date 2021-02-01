@@ -1,7 +1,7 @@
 //This source code is built to provide the explicit definitions and guidelines for the commands that is to be used in this program.
 
 #ifndef _DEFINITIONS_H_
-#include "definitions.h"
+#include "../definitions.h"
 #endif
 
 char *FIELDS[4];
@@ -50,6 +50,12 @@ void print_command_details(int argument_count, char **argument_variables){
             delete_command_details();
         } else if(strcasecmp(*(argument_variables+2), "list") == 0){
             list_command_details();
+        } else if(strcasecmp(*(argument_variables+2), "get") == 0){
+            get_command_details();
+        } else if(strcasecmp(*(argument_variables+2), "modify") == 0){
+            modify_command_details();
+        } else {
+            printf("Error: The specified command \"%s\" does not exist. Please enter a proper command name.\n", *(argument_variables+2));
         }
     }
 }

@@ -34,20 +34,34 @@ Feel free to change.
 
 //So basically our structure will be called list.
 typedef struct creditentials list;
+struct list_linked_list linked_list;
 typedef list* list_p;
 
+//This struct is basically used for storing the structures in the disk.
 struct creditentials{
-    char **host;
-    char **subject;
-    char **id;
-    char **pass;
-    list_p prev, next;
-    int entries;                    //Entries can't be bigger than 10, no matter what.
+    char *host;
+    char *subject;
+    char *id;
+    char *pass;
 };
 
-void print_instructions(void);
-void commands_and_works();
-void  print_command_details(int argument_count, char **argument_variables);
+//upon fetching multiple results for the function search, this list will link them so that the structures can be tracked.
+struct list_linked_list{
+    list credits;
+    list_p next;
+    list_p prev;
+};
+
+
+//The following function declared below are dedicated help functions.
+void commands_and_works(void);          //breifly describes the standard commands and their destined works.
+void add_command_details(void);         //explicitly describes the functionalities and facilities and the usage of the command add.
+void delete_command_details(void);      //explicitly describes the functionalities and facilities and the usage of the command delete.
+void list_command_details(void);        //explicitly describes the fucntionalities and facilities and the usage of the command list.
+void get_command_details(void);         //explicitly describes the functionalities and facilities and the usage of the command get.
+void modify_command_details(void);      //explicitly describes the functionalities and facilities and the usage of the command modify.
+void print_command_details(int argument_count, char **argument_variables);  //dispences and redirects the commands and their paths according to the input taken.
+void print_instructions(void);          //the general entry of the program.
 
 //As we know, the array cannot be used without proper allocation. Thus, this
 //function allocates the area to be used for the function manually. Use this
