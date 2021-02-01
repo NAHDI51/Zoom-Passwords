@@ -1,3 +1,5 @@
+//This source code explicitly describes the facility and utilities of the commmand delete.
+
 #ifndef _DEFINITIONS_H_
 #include "../definitions.h"
 #endif

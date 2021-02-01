@@ -1,3 +1,5 @@
+//This source code explicitly describes the utility and functions of list.
+
 #ifndef _DEFINITIONS_H_
 #include "../definitions.h"
 #endif
