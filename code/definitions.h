@@ -31,6 +31,7 @@ Feel free to change.
 #define HOST_NAME       (1)
 #define ID              (2)
 #define PASS            (3)
+#define FIELD           (4)
 
 //So basically our structure will be called list.
 typedef struct creditentials list;
