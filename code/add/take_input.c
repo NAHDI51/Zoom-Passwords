@@ -58,6 +58,10 @@ list_p add_take_input(int argc, char **argv)
 
            while(decision){
                char *input = (char*)malloc(sizeof(char*) * 100);
+               if(input == NULL){
+                   fprintf(stderr, "take_input.c/62: Error: Could not allocate memory.\n");
+                   exit(1);
+               }
                switch(key){
 
                     case SUBJECT_NAME:
@@ -88,9 +92,7 @@ list_p add_take_input(int argc, char **argv)
                 switch (key)
                 {
                     case SUBJECT_NAME:
-                        printf("Reached here.\n");
                         input = upper_case(input);
-                        printf("Reached here.\n");
 
                         if((does_not_contain_symbol(input))){
                             decision = false;
@@ -102,9 +104,7 @@ list_p add_take_input(int argc, char **argv)
                         break;
                 
                     case HOST_NAME:
-                        printf("reached here.\n");
                         input = caps_first(input);
-                        printf("reached here.\n");
 
                         if((does_not_contain_number(input)) && (does_not_contain_symbol(input))){
                             decision = false;
@@ -114,7 +114,6 @@ list_p add_take_input(int argc, char **argv)
                         break;
 
                     case ID:
-                        printf("Reached here.\n");
                         if((does_not_contain_letter(input)) && (does_not_contain_symbol(input))){
                             decision = false;
                         } else {
@@ -126,9 +125,10 @@ list_p add_take_input(int argc, char **argv)
                         decision = false;
                         break;
                 }
-                new_list->credit[key] = (char*)malloc(sizeof(char*) * sizeof(input));
-                strcpy(new_list->credit[key], input);
-
+               if(decision == false){
+                   new_list->credit[key] = (char*)malloc(sizeof(char*) * sizeof(input));
+                   strcpy(new_list->credit[key], input);
+               }
                free(input);
            }
            key++;
