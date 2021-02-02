@@ -12,10 +12,14 @@ void add_command_details(){
             printf("=>The ID of the meeting\n");
             printf("=>The password of the meeting.\n\n");
             printf("Host name: Host name should be the name of the one created\n\tthis hostroom.\n");
+            printf("=>The name of the host must not contain: symbol and numbers.\n\n");
             printf("content or subject: it should be subject the meeting is being held on\n\tto discuss about.\n");
-            printf("example: if the meeting room is about a class on \"mathematics\", the\n\tsubject of the meeting is \"mathematics\"");
+            printf("=>The subject must not contain: any symbols except comma.\n");
+            printf("example: if the meeting room is about a class on \"mathematics\", the\n\tsubject of the meeting is \"mathematics\"\n\n");
             printf("ID of the meeting: it should\n\tonly contain numbers.\n");
-            printf("Pass of the meeting: The password given alongside the meeting ID.\n\n");
+            printf("=>It must not contain any letters or symbols.\n\n");
+            printf("Pass of the meeting: The password given alongside the meeting ID.\n");
+            printf("=>it may contain anything, including symbols, numbers.\n\n\n");
             printf("#What if the name of the subject I entered already exists?\n");
             printf("=>It will extend and both will appear chronologically. But be careful\nthat you cannot add more than 10");
             printf("entries in a given content or subject.\n\n");

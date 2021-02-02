@@ -4,8 +4,6 @@
 #include "../definitions.h"
 #endif
 
-char *FIELDS[4];
-
 //It's very relevant here. Thus, it has its own function to be called.
 void commands_and_works(){
     printf("%-15s adds a password list in this program\n", "add");
@@ -44,18 +42,23 @@ void print_command_details(int argument_count, char **argument_variables){
         //In this block, after ensuring that there are exactly three arguments,
         //We need to verify that if a valid third command line exists.
 
-        if(strcasecmp(*(argument_variables+2), "add") == 0){
+        if        (strcasecmp(*(argument_variables+2), "add") == 0){
             add_command_details();
-        } else if(strcasecmp(*(argument_variables+2), "delete") == 0){
+        } else if (strcasecmp(*(argument_variables+2), "delete") == 0){
             delete_command_details();
-        } else if(strcasecmp(*(argument_variables+2), "list") == 0){
+        } else if (strcasecmp(*(argument_variables+2), "list") == 0){
             list_command_details();
-        } else if(strcasecmp(*(argument_variables+2), "get") == 0){
+        } else if (strcasecmp(*(argument_variables+2), "get") == 0){
             get_command_details();
-        } else if(strcasecmp(*(argument_variables+2), "modify") == 0){
+        } else if (strcasecmp(*(argument_variables+2), "modify") == 0){
             modify_command_details();
         } else {
             printf("Error: The specified command \"%s\" does not exist. Please enter a proper command name.\n", *(argument_variables+2));
         }
+    } else {
+        for(int i = 3; i < argument_count; i++){
+            printf("Error: command \"%s\" not found. Please enter a valid command.\n", *(argument_variables+i));
+        }
+        exit(1);
     }
 }

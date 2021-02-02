@@ -22,3 +22,14 @@ void allocate_FIELDS(void){
     strcpy(FIELDS[ID], "ID");
     strcpy(FIELDS[PASS], "PASS");
 }
+
+list_p allocate_LIST(void){
+    list_p new_list = (list_p)malloc(sizeof(list));
+
+    if(new_list == NULL){
+        printf("Error: could not allocate the list.\n");
+        exit(1);
+    }
+    
+    return new_list;
+}

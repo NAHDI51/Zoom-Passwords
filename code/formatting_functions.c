@@ -64,19 +64,54 @@ void break_new_line(char **sentence){
 }
 
 //Checks if the sentence is made of basic numbers
-int verify_number(char *sentence)
+int does_not_contain_number(char *sentence)
 {
     int i;
     for(i = 0; *(sentence+i) != '\0'; i++){
-        if((*(sentence+i) >= 48 && *(sentence+i) <= 57) || *(sentence+i) == ' ')
-            return -1;
+        if(*(sentence+i) >= 48 && *(sentence+i) <= 57)
+            return 0;
     }
     return 1;
 }
 
+//Checks if a sentence contains any letter.
+int does_not_contain_letter(char *sentence){
+    for(int i = 0; i < strlen(sentence); i++){
+        if((*(sentence+i) >= 65 && *(sentence+i) <= 90) || (*(sentence+i) >= 97 && *(sentence+i) <= 122)){
+            return false;
+        }
+    }
+    return true;
+}
+
+//checks if a sentence has any comma
+int has_comma(char *sentence){
+    for(int i = 0; i < strlen(sentence); i++){
+        if(*(sentence+i) == ',')
+            return true;
+    }
+    return false;
+}
+
+//Checks if a sentence contains any symbol whatsoever.
+int does_not_contain_symbol(char *str){
+   for(int i = 0; i < strlen(str); i++){
+       if(str[i] == '!' || str[i] == '@' || str[i] == '#' || str[i] == '$'
+      || str[i] == '%' || str[i] == '^' || str[i] == '&' || str[i] == '*'
+      || str[i] == '(' || str[i] == ')' || str[i] == '-' || str[i] == '{'
+      || str[i] == '}' || str[i] == '[' || str[i] == ']' || str[i] == ':'
+      || str[i] == ';' || str[i] == '"' || str[i] == '\'' || str[i] == '<'
+      || str[i] == '>' || str[i] == '.' || str[i] == '/' || str[i] == '?'
+      || str[i] == '~' || str[i] == '`' ){
+          return false;
+      }
+   }
+    return true;
+}
+
 //Caps Locks the first letter of the sentence.
 //WARNING: ALWAYS SEND ALLOCATED MEMORY IN THIS FUNCTION.
-char *caps_first(char sentence[]){
+char *caps_first(char *sentence){
     char *copy_sentence = (char*)malloc(sizeof(char) * (strlen(sentence)+1));
     strcpy(copy_sentence, sentence);
     
@@ -88,6 +123,7 @@ char *caps_first(char sentence[]){
             copy_sentence[i] = tolower(copy_sentence[i]);
         }
     }
+    free(sentence);
     return copy_sentence;
 }
 
