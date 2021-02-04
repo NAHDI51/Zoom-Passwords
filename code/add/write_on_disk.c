@@ -72,16 +72,17 @@ void write_on_disk(list_p node){
     //search for the file.
     while((data_record = readdir(data_dir)) != NULL){
         stat(data_record->d_name, &stats);
-
-        if(!S_ISDIR(stats.st_mode)){    //If we get it, means we don't have to newly create another file, thus make file_exists true.
+        printf("%s\n", data_record->d_name);
+           //If we get it, means we don't have to newly create another file, thus make file_exists true.
             if(strcmp(data_record->d_name, filename) == 0){
                 file_exists = true;
+                printf("triggered!\n");
             }
-        }
     }
 
     FILE *count_file;
     int entries;
+    //The following 5 lines of builds up the address of the file that saves counts by concatnating.
     char* count_name = (char*)malloc(strlen(node->credit[SUBJECT_NAME]) + 2 + strlen(".dat") + strlen("_count") + strlen("counts/"));
     strcpy(count_name, "counts/");
     strcat(count_name, node->credit[SUBJECT_NAME]);
@@ -89,7 +90,7 @@ void write_on_disk(list_p node){
     strcat(count_name, ".dat");
 
     //If the file doesn't exist, we will default the number of entry to 1, and will create a count file.
-    if(!file_exists){
+    if(file_exists == 0){
         entries = 1;
 
         count_file = fopen(count_name, "a");
@@ -100,7 +101,7 @@ void write_on_disk(list_p node){
         fprintf(count_file, "%d", 1);
 
     }else{
-        count_file = fopen(count_name, "r");
+        count_file = fopen(count_name, "rb");
         if(count_file == NULL){
             fprintf(stderr, "add/write_on_disk.c Line 104 Error: Could not open file: %s", count_file);
             exit(1);
