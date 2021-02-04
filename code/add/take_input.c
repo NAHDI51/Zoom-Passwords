@@ -27,7 +27,6 @@ void add_take_input(int argc, char **argv)
         =>Subject Name
         =>ID
         =>Pass
-
         the input will be taken with the 100 character string input and will be saved on the list.
         */
 
@@ -36,12 +35,10 @@ void add_take_input(int argc, char **argv)
        =>SUBJECT NAME: No contraints, may contain any sumbol or notation.
        =>ID: Cannot contain any letters, symbols and notations.
        =>PASS: Can contain anything.
-
        The following functions for measuring these criterias are defined in the source code "../formatting_functions.c". They are:
        =>does_not_contain_number(sentence)
        =>does_not_contain_symbol(sentence)
        =>does_not_contain_letter(sentence)
-
        In order to format the sentences, the following defined functions are:
        =>break_new_line(sentence) //eliminates the last unnecessary newline when taken input
        =>caps_first(sentence)        //Makes the first letters of the words of the following sentence capital and the rest small.
@@ -59,7 +56,7 @@ void add_take_input(int argc, char **argv)
            while(decision){
                char *input = (char*)malloc(sizeof(char*) * 100);
                if(input == NULL){
-                   fprintf(stderr, "take_input.c/62: Error: Could not allocate memory.\n");
+                   fprintf(stderr, "add/take_input.c/62: Error: Could not allocate memory.\n");
                    exit(1);
                }
                switch(key){
@@ -82,6 +79,16 @@ void add_take_input(int argc, char **argv)
 
                 break_new_line(&input);
                 no_spaces_first(&input);
+                 if((key != PASS) && (key != ID)){
+                    remove_extra_spaces(input);
+                } else if (key == ID){
+                    remove_spaces(input);
+                }
+
+                if(strlen(input) == 0){
+                    printf("[Please enter something] ");
+                    continue;
+                }
 
                 if(strcmp(input, "Q") == 0){
                     key = 4;
@@ -96,8 +103,10 @@ void add_take_input(int argc, char **argv)
 
                         if((does_not_contain_symbol(input))){
                             decision = false;
+                            printf("\n");
                         } else if (has_comma(input)){
                             decision = false;
+                            printf("\n");
                         } else {
                             printf("[YOU CAN'T ENTER ANY SYMBOL EXCEPT COMMA] ");
                         }
@@ -108,14 +117,18 @@ void add_take_input(int argc, char **argv)
 
                         if((does_not_contain_number(input)) && (does_not_contain_symbol(input))){
                             decision = false;
+                            printf("\n");
                         } else {
                             printf("[HOST NAME CANNOT CONTAIN ANY NUMBERS OR SYMBOLS] ");
                         }
                         break;
 
                     case ID:
-                        if((does_not_contain_letter(input)) && (does_not_contain_symbol(input))){
+                        if((strlen(input) == 10 || strlen(input) == 11) && (does_not_contain_letter(input)) && (does_not_contain_symbol(input))){
                             decision = false;
+                            printf("\n");
+                        } else if((strlen(input) != 10 || strlen(input) != 11) && (does_not_contain_letter(input) && does_not_contain_symbol(input))) {
+                            printf("[ID CAN ONLY HAVE EITHER 10 OR 11 NUMBERS] ");
                         } else {
                             printf("[ID CANNOT CONTAIN ANY NUMBERS OR SYMBOLS] ");
                         }
@@ -123,10 +136,11 @@ void add_take_input(int argc, char **argv)
 
                     case PASS:
                         decision = false;
+                        printf("\n");
                         break;
                 }
                if(decision == false){
-                   new_list->credit[key] = (char*)malloc(sizeof(char*) * sizeof(input));
+                   new_list->credit[key] = (char*)malloc(sizeof(char*) * (strlen(input) + 1));
                    strcpy(new_list->credit[key], input);
                }
                free(input);
@@ -137,18 +151,20 @@ void add_take_input(int argc, char **argv)
            printf("Program Terminated.\n");
            exit(0);
        }
-        write_on_disk(new_list);
-        printf("\n");
-        printf("List added:\n");
+       printf("\n");
+       printf("%-16s: %s\n", upper_case(FIELDS[SUBJECT_NAME]), new_list->credit[SUBJECT_NAME]);
+       FILL(22+strlen(new_list->credit[SUBJECT_NAME]), '-');
+       printf("\n");
 
-        printf("%-20s: %s\n", FIELDS[SUBJECT_NAME], new_list->credit[0]);
-        FILL(22 + strlen(new_list->credit[key]) ,'-');
-        printf("\n");
+       for(int i = 1; i < FIELD; i++){
+           printf("%-16s: %s\n", upper_case(FIELDS[i]), new_list->credit[i]);
+       }
+       printf("\n");
 
-        for(int i = 1; i < FIELD; i++){
-            printf("%-20s: %s\n", FIELDS[i], new_list->credit[i]);
-        }
+       write_on_disk(new_list);
 
-        return;
+       printf("\nList added.\n");
+
+       return;
     }
 }

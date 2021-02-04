@@ -35,6 +35,11 @@ int character_case_compare(char a, char b)     //1 on success, 0 on failure
 char *upper_case(char* sentence)
 {
     char *copy_sentence = (char*)malloc(sizeof(char) * (strlen(sentence)+1));
+    if(copy_sentence == NULL){
+        printf("formatting_functions.c Line: 39: Error: Could not allocate: copy_sentence.\n");
+        exit(1);
+    }
+
     strcpy(copy_sentence, sentence);
     
     copy_sentence[0] = toupper(copy_sentence[0]);
@@ -119,6 +124,11 @@ int does_not_contain_symbol(char *str){
 //WARNING: ALWAYS SEND ALLOCATED MEMORY IN THIS FUNCTION.
 char *caps_first(char *sentence){
     char *copy_sentence = (char*)malloc(sizeof(char) * (strlen(sentence)+1));
+    if(copy_sentence == NULL){
+        fprintf(stderr, "formatting_functions.c Line: 128: Error: Could not allocate: copy_sentence");
+        exit(1);
+    }
+
     strcpy(copy_sentence, sentence);
     
     copy_sentence[0] = toupper(copy_sentence[0]);
@@ -133,10 +143,59 @@ char *caps_first(char *sentence){
     return copy_sentence;
 }
 
+void remove_extra_spaces(char *sentence){
+    int space;
+
+    for(int i = 0, j = 0; sentence[i-1] != '\0'; i++){
+        if(sentence[i] == ' '){
+            space++;
+        }else if(sentence[i] != ' '){
+            space = 0;
+        }
+        if(space <= 1){
+            sentence[j] = sentence[i];
+            j++;
+        }
+    }
+    return;
+}
+
+void remove_spaces(char *sentence){
+    int space;
+
+    for(int i = 0, j = 0; sentence[i-1] != '\0'; i++){
+        if(sentence[i] == ' '){
+            space++;
+        }else if(sentence[i] != ' '){
+            space = 0;
+        }
+        if(space == 0){
+            sentence[j] = sentence[i];
+            j++;
+        }
+    }
+    return;
+}
+
  //Removes the unncesssary spaces at the beginning of a sentenc
 void no_spaces_first(char **sentence)
 {
     int i = 0, j;
     while((*sentence)[i] == ' ') i++;
     for(j = 0; (*sentence)[i-1] != '\0'; i++, j++) (*sentence)[j] = (*sentence)[i];
+}
+
+char* underscore(char *sentence){
+    char *copy_sentence = (char*)malloc(sizeof(char) * (strlen(sentence) + 1));
+    if(copy_sentence == NULL){
+        fprintf(stderr, "formatting_functions.c Line 191, Error: Could not allocate: copy_sentence\n");
+        exit(1);
+    }
+
+    for(int i = 0; sentence[i-1] != '\0'; i++){
+        copy_sentence[i] = sentence[i];
+        if(sentence[i] == ' ')
+            copy_sentence[i] = '_';
+    }
+    return copy_sentence;
 }

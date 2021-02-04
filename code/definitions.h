@@ -58,7 +58,8 @@ void delete_command_details(void);      //explicitly describes the functionaliti
 void list_command_details(void);        //explicitly describes the fucntionalities and facilities and the usage of the command list.
 void get_command_details(void);         //explicitly describes the functionalities and facilities and the usage of the command get.
 void modify_command_details(void);      //explicitly describes the functionalities and facilities and the usage of the command modify.
-void print_command_details(int argument_count, char **argument_variables);  //dispences and redirects the commands and their paths according to the input taken.
+void print_command_details(int argument_count, char **argument_variables);  
+//dispences and redirects the commands and their paths according to the input taken.
 void print_instructions(void);          //the general entry of the program.
 
 //Add program
@@ -87,5 +88,8 @@ int addition_string(char *sentence);                      //The sum of the ASCII
 int char_case_compare(char a, char b);                    //Compares two characers, ignoring their cases.
 void swap(char *a, char *b);
 int has_comma(char *sentence);                            //Checks if a sentence has comma or not.
+void remove_extra_spaces(char *sentence);                 //removes the unncesessary spaces in the middle of a sentence.
+void remove_spaces(char* sentence);                       //Removes every spaces.
+char* underscore(char* sentence);                         //underscores the spaces.
 
 
