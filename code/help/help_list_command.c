@@ -15,7 +15,7 @@ void list_command_details(void){
     printf("Syntax: pass list all\n");
     printf("        pass list \n\n");
     printf("Either command will work.\n\n");
-    printf("To list a specified list:\n");
+    printf("ii)To list a specified list:\n");
     printf("Syntax: pass list \"FIELD\"=\"FIELD INFORMATION\"\n\n");
     printf("this command searches for the information specified on the field and lists\n");
     printf("the following list. This command works similarly to the command \"delete\".\n\n");

@@ -10,7 +10,7 @@ char *FIELDS[4];
     -saves the input in the disk, with the subject's name as the name of the file, on ../../datas/SUBJECT_NAME.dat
 */
 
-list_p add_take_input(int argc, char **argv)
+void add_take_input(int argc, char **argv)
 {
     if(argc > 2){
         for(int i = 2; i < argc; i++){
@@ -137,9 +137,18 @@ list_p add_take_input(int argc, char **argv)
            printf("Program Terminated.\n");
            exit(0);
        }
-       //test
-       for(int i = 0; i < 4; i++){
-           printf("%-15s%s\n", upper_case(FIELDS[i]), new_list->credit[i]);
-       }
+        write_on_disk(new_list);
+        printf("\n");
+        printf("List added:\n");
+
+        printf("%-20s: %s\n", FIELDS[SUBJECT_NAME], new_list->credit[0]);
+        FILL(22 + strlen(new_list->credit[key]) ,'-');
+        printf("\n");
+
+        for(int i = 1; i < FIELD; i++){
+            printf("%-20s: %s\n", FIELDS[i], new_list->credit[i]);
+        }
+
+        return;
     }
 }

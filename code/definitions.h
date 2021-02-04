@@ -62,7 +62,8 @@ void print_command_details(int argument_count, char **argument_variables);  //di
 void print_instructions(void);          //the general entry of the program.
 
 //Add program
-list_p add_take_input(int argc, char **argv); 
+void add_take_input(int argc, char **argv); 
+void write_on_disk(list_p node);
 
 //As we know, the array cannot be used without proper allocation. Thus, this
 //function allocates the area to be used for the function manually. Use these
