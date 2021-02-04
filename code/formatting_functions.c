@@ -34,9 +34,15 @@ int character_case_compare(char a, char b)     //1 on success, 0 on failure
 //Sentence capped.
 char *upper_case(char* sentence)
 {
-    int i;
-    for(i = 0; *(sentence+i) != '\0'; i++) *(sentence+i) = toupper(*(sentence+i));
-    return sentence;
+    char *copy_sentence = (char*)malloc(sizeof(char) * (strlen(sentence)+1));
+    strcpy(copy_sentence, sentence);
+    
+    copy_sentence[0] = toupper(copy_sentence[0]);
+    for(int i = 1; copy_sentence[i] != '\0'; i++){
+        copy_sentence[i] = toupper(copy_sentence[i]);
+    }
+    free(sentence);
+    return copy_sentence;
 }
 
 //Fills a "quantity" of space with a certain "Character".
