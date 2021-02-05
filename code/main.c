@@ -29,7 +29,9 @@ int main(int argc, char **argv)
             print_command_details(argc, copy_argv);
         } else if (strcasecmp(*(copy_argv+1), "add") ==  0){
             add_take_input(argc, copy_argv);
-        } else {
+        } else if (strcasecmp(*(copy_argv+1), "list") == 0){
+            list_funcs(argc, copy_argv);
+        }else {
             printf("Error: command \"%s\" not found. Please use a valid command.\n", *(copy_argv+1));
         }
     }

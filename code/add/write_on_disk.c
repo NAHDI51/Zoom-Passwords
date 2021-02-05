@@ -18,47 +18,14 @@
 
 void write_on_disk(list_p node){
 
-    struct stat stats;    //Records every file's datas and stats.
-
     //The root folder of the program.
     chdir("..");
 
-    DIR* main_dir = opendir(".");
-    if(main_dir == NULL){
-        fprintf(stderr, "add/write_on_disk.c Line: 19, Error: count not open the directory.\n");
-        exit(1);
-    }
-    struct dirent* main_dir_record;     //This variable reads the assigned directory and returns the folders and files within.
-
-    int folder_exists = false;
-    while((main_dir_record = readdir(main_dir)) != NULL){
-        stat(main_dir_record->d_name, &stats);
-        if(S_ISDIR(stats.st_mode)){
-
-            //If the data folder is not created, create that folder.
-            if(strcasecmp(main_dir_record->d_name, "data") == 0){
-                folder_exists = true;
-            }
-            //Otherwise, don't do anything.
-        }
-    }
-
-    if(!folder_exists){
+    int folder_exist = folder_exists(".", "data");
+    if(!folder_exist){
         system("mkdir data");
         system("mkdir counts");
     }
-    closedir(main_dir);
-
-    //After the validity of the folder data has been ensured, start writing in the folder.
-    DIR* data_dir = opendir("data");
-    if(data_dir == NULL){
-        printf("add/write_on_disk.c Line 55, Error: could not open the directory.\n");
-        exit(1);
-    }
-
-    //This variable searchs for the entry of a specific subject, and then
-    struct dirent *data_record;
-    int file_exists = false;
 
     char *filename = (char*)malloc(sizeof(char) * ((strlen(node->credit[SUBJECT_NAME]) + 1) + strlen(".dat")));
     if(filename == NULL){
@@ -68,17 +35,7 @@ void write_on_disk(list_p node){
     strcpy(filename, underscore(node->credit[SUBJECT_NAME]));
     strcat(filename, ".dat");
 
-
-    //search for the file.
-    while((data_record = readdir(data_dir)) != NULL){
-        stat(data_record->d_name, &stats);
-        printf("%s\n", data_record->d_name);
-           //If we get it, means we don't have to newly create another file, thus make file_exists true.
-            if(strcmp(data_record->d_name, filename) == 0){
-                file_exists = true;
-                printf("triggered!\n");
-            }
-    }
+    int file_exist = file_exists("data", filename);
 
     FILE *count_file;
     int entries;
@@ -90,7 +47,7 @@ void write_on_disk(list_p node){
     strcat(count_name, ".dat");
 
     //If the file doesn't exist, we will default the number of entry to 1, and will create a count file.
-    if(file_exists == 0){
+    if(file_exist == 0){
         entries = 1;
 
         count_file = fopen(count_name, "a");
@@ -101,12 +58,12 @@ void write_on_disk(list_p node){
         fprintf(count_file, "%d", 1);
 
     }else{
-        count_file = fopen(count_name, "rb");
+        count_file = fopen(count_name, "r");
         if(count_file == NULL){
             fprintf(stderr, "add/write_on_disk.c Line 104 Error: Could not open file: %s", count_file);
             exit(1);
         }
-        fscanf(count_file, "%d", entries);
+        fscanf(count_file, "%d", &entries);
         entries++;
 
         fclose(count_file);

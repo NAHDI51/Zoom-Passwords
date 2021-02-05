@@ -9,8 +9,8 @@ void commands_and_works(){
     printf("%-15s adds a password list in this program\n", "add");
     printf("%-15s Deletes a specified list from this program.\n", "delete");
     printf("%-15s modifies a specified list\n", "modify");
-    printf("%-15s lists all or a specified list\n\n", "list");
-    printf("%-15s gets the list for a specified information.\n", "get");
+    printf("%-15s lists all or a specified list\n", "list");
+    printf("%-15s gets the list for a specified information.\n\n", "get");
 }
 
 //Prints the brief details of all the main commands.

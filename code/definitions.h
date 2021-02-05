@@ -74,6 +74,11 @@ void write_on_disk(list_p node);
 void allocate_FIELDS(void);
 list_p allocate_LIST(void);
 
+//functions for listing the functions
+void list_funcs(int argc, char** argv);
+int folder_exists(char* path, char* folder);
+int file_exists(char* path, char* folder);
+
 //formatting functions
 void FILL(int quantity, char character);                  //Fills a "quantity" of space with a certain "Character".
 char first_of(char *key);                                 //Returns first character.
@@ -87,7 +92,7 @@ int does_not_contain_letter(char *sentence);              //checks if the senten
 int addition_string(char *sentence);                      //The sum of the ASCII values of the string.
 int char_case_compare(char a, char b);                    //Compares two characers, ignoring their cases.
 void swap(char *a, char *b);
-int has_comma(char *sentence);                            //Checks if a sentence has comma or not.
+int has_character(char *sentence, char symbol);           //Checks if a sentence has comma or not.
 void remove_extra_spaces(char *sentence);                 //removes the unncesessary spaces in the middle of a sentence.
 void remove_spaces(char* sentence);                       //Removes every spaces.
 char* underscore(char* sentence);                         //underscores the spaces.

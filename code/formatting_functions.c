@@ -96,9 +96,9 @@ int does_not_contain_letter(char *sentence){
 }
 
 //checks if a sentence has any comma
-int has_comma(char *sentence){
+int has_character(char *sentence, char symbol){
     for(int i = 0; i < strlen(sentence); i++){
-        if(*(sentence+i) == ',')
+        if(*(sentence+i) == symbol)
             return true;
     }
     return false;

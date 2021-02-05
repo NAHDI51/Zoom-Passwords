@@ -104,11 +104,14 @@ void add_take_input(int argc, char **argv)
                         if((does_not_contain_symbol(input))){
                             decision = false;
                             printf("\n");
-                        } else if (has_comma(input)){
+                        } else if (has_character(input, ',')){
+                            decision = false;
+                            printf("\n");
+                        } else if (has_character(input, '.')){
                             decision = false;
                             printf("\n");
                         } else {
-                            printf("[YOU CAN'T ENTER ANY SYMBOL EXCEPT COMMA] ");
+                            printf("[YOU CAN'T ENTER ANY SYMBOL EXCEPT \",\"] ");
                         }
                         break;
                 
