@@ -31,7 +31,7 @@ void list_funcs(int argc, char** argv){
     DIR* count_dir = opendir("counts");
     DIR* data_dir = opendir("data");
     if(data_dir == NULL || count_dir == NULL){
-        fprintf(stderr, "list/list_funcs.c Line: 31 Error: Could not open the file.\n");
+        fprintf(stderr, "list/list_funcs.c Line: 33 Error: Could not open the file.\n");
         exit(1);
     }
 
@@ -85,7 +85,7 @@ void list_funcs(int argc, char** argv){
                 for(int i = 0; *(argv+(i-1)) != '\0'; i++){
                     fields->specifier[i] = *(argv+i);
                 }
-                fields->specifier = SUBJECT_NAME;
+                fields->number = SUBJECT_NAME;
 
                 //basically what we have done in that column is to fill out the specifiers.
             }
@@ -93,13 +93,28 @@ void list_funcs(int argc, char** argv){
             *equal_sign = '\0';
             int length = 0;
 
-            for(int i = 1; *(equal_sign + i) != '\0'; i++) length++;
+            for(int i = 1; *(equal_sign + (i-1)) != '\0'; i++) length++;
             fields->specifier = (char*)malloc(length+1);
-            for(int i = 1; *(equal_sign + i) != '\0'; i++){
-                
+            for(int i = 1; *(equal_sign + (i-1)) != '\0'; i++){
+                fields->specifier[i-1] = *(equal_sign+i);
+            }
+            //test
+            printf("%s\n", equal_sign+1);
+            printf("%s\n", argv[2]);
+
+            if(strcasecmp(argv[2], "subject name") == 0){
+                fields->number = SUBJECT_NAME;
+            } else if (strcasecmp(argv[2], "host name") == 0){
+                fields->number = HOST_NAME;
+            } else if (strcasecmp(argv[2], "ID") == 0){
+                fields->number = ID;
+            } else {
+                printf("\nPlease enter a proper field. To know more about fields, please enter \"pass help list\"\n");
+                exit(1);
             }
         }
     }
+    return;
 
         while(((data_read = readdir(data_dir)) != NULL) || ((count_read = readdir(data_dir)) != NULL)){
             /*algorithm:
