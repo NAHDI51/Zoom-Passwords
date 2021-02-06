@@ -33,6 +33,11 @@ Feel free to change.
 #define PASS            (3)
 #define FIELD           (4)
 
+#define called_for_list   (0)
+#define called_for_get    (1)
+#define called_for_modify (2)
+#define called_for_delete (3)
+
 //So basically our structure will be called list.
 typedef struct creditentials list;
 struct list_linked_list linked_list;
@@ -40,7 +45,7 @@ typedef list* list_p;
 
 //This struct is basically used for storing the structures in the disk.
 struct creditentials{
-    char *credit[4];
+    char credit[4][80];
 };
 
 //upon fetching multiple results for the function search, this list will link them so that the structures can be tracked.
@@ -75,7 +80,7 @@ void allocate_FIELDS(void);
 list_p allocate_LIST(void);
 
 //functions for listing the functions
-void list_funcs(int argc, char** argv);
+void list_funcs(int argc, char** argv, int mode);
 int folder_exists(char* path, char* folder);
 int file_exists(char* path, char* folder);
 

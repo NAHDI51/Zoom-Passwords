@@ -27,13 +27,13 @@ void write_on_disk(list_p node){
         system("mkdir counts");
     }
 
-    char *filename = (char*)malloc(sizeof(char) * ((strlen(node->credit[SUBJECT_NAME]) + 1) + strlen(".dat")));
+    char *filename = (char*)malloc(sizeof(char) * ((strlen(node->credit[SUBJECT_NAME]) + 1) + strlen(".txt")));
     if(filename == NULL){
-        printf("add/write_on_disk.c Line 65, Error: could not open the directory.\n");
+        printf("add/write_on_disk.c Line 32, Error: could not open the directory.\n");
         exit(1);
     }
     strcpy(filename, underscore(node->credit[SUBJECT_NAME]));
-    strcat(filename, ".dat");
+    strcat(filename, ".txt");
 
     int file_exist = file_exists("data", filename);
 
@@ -44,7 +44,7 @@ void write_on_disk(list_p node){
     strcpy(count_name, "counts/");
     strcat(count_name, node->credit[SUBJECT_NAME]);
     strcat(count_name, "_count");
-    strcat(count_name, ".dat");
+    strcat(count_name, ".txt");
 
     //If the file doesn't exist, we will default the number of entry to 1, and will create a count file.
     if(file_exist == 0){
@@ -52,7 +52,7 @@ void write_on_disk(list_p node){
 
         count_file = fopen(count_name, "a");
         if(count_file == NULL){
-            printf("add/write_on_disk Line 95, Error: could not open file: %s", count_file);
+            printf("add/write_on_disk Line 55, Error: could not open file: %s", count_file);
             exit(1);
         }
         fprintf(count_file, "%d", 1);
@@ -60,7 +60,7 @@ void write_on_disk(list_p node){
     }else{
         count_file = fopen(count_name, "r");
         if(count_file == NULL){
-            fprintf(stderr, "add/write_on_disk.c Line 104 Error: Could not open file: %s", count_file);
+            fprintf(stderr, "add/write_on_disk.c Line 64 Error: Could not open file: %s", count_file);
             exit(1);
         }
         fscanf(count_file, "%d", &entries);
@@ -70,7 +70,7 @@ void write_on_disk(list_p node){
 
         count_file = fopen(count_name, "w");
         if(count_file == NULL){
-            fprintf(stderr, "add/write_on_disk.c Line 104 Error: Could not open file: %s", count_file);
+            fprintf(stderr, "add/write_on_disk.c Line 73 Error: Could not open file: %s", count_file);
             exit(1);
         }
         fprintf(count_file, "%d", entries);
@@ -83,7 +83,7 @@ void write_on_disk(list_p node){
 
     char *data_filename = (char*)malloc(strlen(filename) + 2 + strlen("data/"));
     if(data_filename == NULL){
-        printf("add/write_on_disk Line 125, Error: could not allocate: data_filename");
+        printf("add/write_on_disk Line 86, Error: could not allocate: data_filename");
         exit(1);
     }
     sprintf(data_filename, "data/%s", filename);
@@ -91,7 +91,7 @@ void write_on_disk(list_p node){
 
     FILE* data_file = fopen(data_filename, "a");
     if(data_file == NULL){
-        fprintf(stderr, "add/write_on_disk.c Line 133: Error: could not open file: %s", data_filename);
+        fprintf(stderr, "add/write_on_disk.c Line 94: Error: could not open file: %s", data_filename);
         exit(1);
     }
 

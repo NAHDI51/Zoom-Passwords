@@ -111,7 +111,7 @@ int does_not_contain_symbol(char *str){
       || str[i] == '%' || str[i] == '^' || str[i] == '&' || str[i] == '*'
       || str[i] == '(' || str[i] == ')' || str[i] == '-' || str[i] == '{'
       || str[i] == '}' || str[i] == '[' || str[i] == ']' || str[i] == ':'
-      || str[i] == ';' || str[i] == '"' || str[i] == '\'' || str[i] == '<'
+      || str[i] == ';' || str[i] == '"' || str[i] == (char)92 || str[i] == '<'
       || str[i] == '>' || str[i] == '.' || str[i] == '/' || str[i] == '?'
       || str[i] == '~' || str[i] == '`' ){
           return false;

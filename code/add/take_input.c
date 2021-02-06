@@ -107,9 +107,6 @@ void add_take_input(int argc, char **argv)
                         } else if (has_character(input, ',')){
                             decision = false;
                             printf("\n");
-                        } else if (has_character(input, '.')){
-                            decision = false;
-                            printf("\n");
                         } else {
                             printf("[YOU CAN'T ENTER ANY SYMBOL EXCEPT \",\"] ");
                         }
@@ -143,7 +140,6 @@ void add_take_input(int argc, char **argv)
                         break;
                 }
                if(decision == false){
-                   new_list->credit[key] = (char*)malloc(sizeof(char*) * (strlen(input) + 1));
                    strcpy(new_list->credit[key], input);
                }
                free(input);
