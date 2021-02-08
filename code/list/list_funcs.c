@@ -17,9 +17,16 @@
 char *FIELDS[4];
 
 void list_funcs(int argc, char** argv, int mode){
-    int listed = 0;
-    int total_files = 0;
-    int total_entries = 0;
+    int listed = 0;             //increment for each successfully printed list
+    int total_files = 0;        //increment for each file iteration.
+    int total_entries = 0;      //increment for each entry iteration.
+
+    linked_list *chain = (linked_list*)malloc(sizeof(linked_list));
+    if(chain == NULL){
+        fprintf(stderr, "list/list_funcs Line 27; Error: Could not allocate the memory.\n");
+        exit(1);
+    }
+    chain->current = chain->next = chain->prev = NULL;
 
     //Since we will work on the main directory most frequently, change the current directory.
     chdir("..");
@@ -67,8 +74,8 @@ void list_funcs(int argc, char** argv, int mode){
 
 
      typedef struct instrcution{
-            int number;
-            char *specifier;
+            int number;         //The number will compare the key number of the 4 string array.
+            char *specifier;    //It will work as the information of the required field.
         }instructions;
         //These will work as the key specifiers in our operation.
 
@@ -115,6 +122,7 @@ void list_funcs(int argc, char** argv, int mode){
                 fields->specifier[i-1] = *(equal_sign+i);
             }
 
+            //Eliminate if the user has entered an invalid input.
             if(strcasecmp(argv[2], "subject name") == 0){
                 fields->number = SUBJECT_NAME;
             } else if (strcasecmp(argv[2], "host name") == 0){
@@ -164,8 +172,6 @@ void list_funcs(int argc, char** argv, int mode){
            }
             strcpy(file_name, "data/");
             strcat(file_name, data_read->d_name);
-            //test
-            printf("%s\n", file_name);
 
            FILE* data_file = fopen(file_name, "rb");
            if(data_file == NULL){
@@ -174,20 +180,88 @@ void list_funcs(int argc, char** argv, int mode){
            }
 
            int entries;
+           int entry_listed = 0;
            fscanf(count_file, "%d", &entries);
             
            for(int i = 0; i < entries; i++){
                list_p current_list = (list*)malloc(sizeof(list));  //The list on which the structure is to be written on.
+               if(current_list == NULL){
+                   fprintf(stderr, "list/list_funcs.c Line 182: Error: could not allocate memory.\n");
+                   exit(1);
+               }
             
                 fread(current_list, sizeof(list), 1, data_file);
-              
+                
+                //This is where our local operation starts in. The program will fetch and print results based on 
+                //What the user has asked.
 
-                free(current_list);
+                //We will basically get divided into four different options for four different commands.
+                
+                //Procedures:
+                /*
+                1. For fields->number == 4, we will basically print them all out.
+                2. For 3 >= fields->number >= 0, we will print compare them to the index number of current_list->credits,
+                   and will print them out if matches.
+                */
+
+               if(fields->number == 4){
+                   if(entry_listed == 0){
+                       FILL(40, '=');
+                       printf("|");
+                       printf("\n");
+                       printf("%-18s: %-20s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
+                       FILL(40, '=');
+                       printf("|");
+                       printf("\n%-40s|\n", " ", " ");
+                   }
+                   entry_listed++;
+                   listed++;
+                   //The difference between two listed is that one is global, and the other one is local.
+                   
+                   FILL(40, '-');
+                   printf("|\n", " ");
+                   printf("[%d]%-37s|\n", listed, " ");
+
+                   for(int j = 1; j < FIELD; j++){
+                       printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
+                   }
+                   printf("%-40s|\n", " ");
+
+               } else if (fields->number >= 0 && fields->number <= 2){
+                   if(strstr(current_list->credit[fields->number], fields->specifier) != NULL){
+                        if(entry_listed == 0){
+                            FILL(40, '=');
+                            printf("|");
+                            printf("\n");
+                            printf("%-18s: %-20s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
+                            FILL(40, '=');
+                            printf("|");
+                            printf("\n%-40s|\n", " ", " ");
+                        }
+                        entry_listed++;
+                        listed++;
+                        //The difference between two listed is that one is global, and the other one is local.
+                   
+                        FILL(40, '-');
+                        printf("|\n", " ");
+                        printf("[%d]%-37s|\n", entry_listed, " ");
+
+                        for(int j = 1; j < FIELD; j++){
+                            printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
+                        }
+                        printf("%-40s|\n", " ");
+                    }
+
+                    if(mode == called_for_modify || mode == called_for_get || mode == called_for_delete){
+                        //then save the list into the linked list named chain.
+                        if(chain->current)
+                        
+                    }
+               }
            }
 
            free(file_name);
            free(count_name);
         }
-    
     return;
 }

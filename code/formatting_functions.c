@@ -199,3 +199,18 @@ char* underscore(char *sentence){
     }
     return copy_sentence;
 }
+
+char* id_format(char* id){
+    char* copy = (char*)malloc(13);
+    if(copy == NULL){
+        fprintf(stderr, "formatting_functions.c Line: 206: Error: Could not allocate memory.\n");
+        exit(1);
+    }
+    for(int i = 0, j = 0; id[i] != NULL; i++){
+        if((i+1) % 4 == 0){
+            j++;
+        }
+        copy[j] = id[i];
+    }
+    return copy;
+}

@@ -40,7 +40,6 @@ Feel free to change.
 
 //So basically our structure will be called list.
 typedef struct creditentials list;
-struct list_linked_list linked_list;
 typedef list* list_p;
 
 //This struct is basically used for storing the structures in the disk.
@@ -50,10 +49,10 @@ struct creditentials{
 
 //upon fetching multiple results for the function search, this list will link them so that the structures can be tracked.
 struct list_linked_list{
-    list credits;
+    list_p current;
     list_p next;
-    list_p prev;
 };
+typedef struct list_linked_list linked_list;
 
 
 //The following function declared below are the dedicated help functions.
