@@ -206,11 +206,33 @@ char* id_format(char* id){
         fprintf(stderr, "formatting_functions.c Line: 206: Error: Could not allocate memory.\n");
         exit(1);
     }
-    for(int i = 0, j = 0; id[i] != NULL; i++){
+    for(int i = 0, j = 0; id[i] != '\0'; i++){
         if((i+1) % 4 == 0){
             j++;
         }
         copy[j] = id[i];
     }
     return copy;
+}
+
+//case insensitive way of finding the occurence of needle in the haystack.
+char* strcasestr(char* haystack, char* needle){
+    if(strlen(needle) > strlen(haystack) ||
+      (strlen(haystack) == 0 || strlen(needle) == 0) ||
+      (haystack == NULL || needle == NULL)
+    ){
+        return NULL;
+    }
+
+    for(int i = 0; i <= strlen(haystack) - strlen(needle); i++){
+        char j = haystack[i+strlen(needle)];
+        haystack[i+strlen(needle)] = '\0';
+        
+        if(strcasecmp(haystack+i, needle) == 0){
+            haystack[i+strlen(needle)] = j;
+            return haystack+i;
+        }
+        haystack[i+strlen(needle)] = j;
+    }
+    return NULL;
 }

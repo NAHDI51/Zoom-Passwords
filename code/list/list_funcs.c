@@ -17,42 +17,16 @@
 char *FIELDS[4];
 
 void list_funcs(int argc, char** argv, int mode){
-    int listed = 0;             //increment for each successfully printed list
-    int total_files = 0;        //increment for each file iteration.
-    int total_entries = 0;      //increment for each entry iteration.
-
-    linked_list *chain = (linked_list*)malloc(sizeof(linked_list));
-    if(chain == NULL){
-        fprintf(stderr, "list/list_funcs Line 27; Error: Could not allocate the memory.\n");
-        exit(1);
-    }
-    chain->current = chain->next = chain->prev = NULL;
-
     //Since we will work on the main directory most frequently, change the current directory.
     chdir("..");
+
+    void (*redirector[3])(list_p) = {&get_command, &modify_command, &delete_command};
 
     int folder_exist = folder_exists(".", "counts");
     if(!folder_exist){
         printf("You have not entered any list yet. enter \"pass add\" to add a list.\n");
         return;
     }
-
-    //files and readers defined below.
-    DIR* count_dir = opendir("counts");
-    DIR* data_dir = opendir("data");
-    if(data_dir == NULL || count_dir == NULL){
-        fprintf(stderr, "list/list_funcs.c Line: 36 Error: Could not open the file.\n");
-        exit(1);
-    }
-    //Our main work is on the following two directory: count and data.
-    //Therefore, every variable starting with the word count refers to every one of the variable of the directory "count".
-    //On the contrary, data refers to every variable of the files inside the directory, "data".
-
-    struct dirent *count_read;
-    struct dirent *data_read;
-
-    struct stat count_stats;
-    struct stat read_stats;
 
     /*I have specified three instances of usages of the list command.
 
@@ -135,8 +109,38 @@ void list_funcs(int argc, char** argv, int mode){
             }
         }
     }
+    if(argc > 3){
+        printf("You have entered too many commands. Please checkout the rules for using commands.\n");
+        return;
+    }
     
-    
+    int got_list = false;
+    int printed_list = false;
+    int total_entries = 0;      //increment for each entry iteration.
+    int index;                  //index the program will ask for after listing the entries.
+
+
+    while(!got_list){
+         //files and readers defined below.
+        DIR* count_dir = opendir("counts");
+        DIR* data_dir = opendir("data");
+        if(data_dir == NULL || count_dir == NULL){
+            fprintf(stderr, "list/list_funcs.c Line: 129 Error: Could not open the file.\n");
+            exit(1);
+        }
+        //Our main work is on the following two directory: count and data.
+        //Therefore, every variable starting with the word count refers to every one of the variable of the directory "count".
+        //On the contrary, data refers to every variable of the files inside the directory, "data".
+
+        struct dirent *count_read;
+        struct dirent *data_read;
+
+        struct stat count_stats;
+        struct stat read_stats;
+        int total_files = 0;        //increment for each file iteration.
+
+        int listed = 0;             //increment for each successfully printed list
+
         while((data_read = readdir(data_dir)) != NULL){
             /*algorithm:
             1. make a file pointer that indicates to the count file.
@@ -153,7 +157,7 @@ void list_funcs(int argc, char** argv, int mode){
 
            char *count_name = (char*)malloc(strlen(count_read->d_name) + strlen("/counts") + 2);
            if(count_name == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 149: Error: could not allocate the required memory.\n");
+               fprintf(stderr, "list/list_funcs.c Line 160: Error: could not allocate the required memory.\n");
                exit(1);
            }
            strcpy(count_name, "counts/");
@@ -161,13 +165,13 @@ void list_funcs(int argc, char** argv, int mode){
 
            FILE* count_file = fopen(count_name, "r");
            if(count_file == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 157: Error: Could not open the file.\n");
+               fprintf(stderr, "list/list_funcs.c Line 168: Error: Could not open the file.\n");
                exit(1);
            }
 
            char* file_name = (char*)malloc(strlen(data_read->d_name) + 8);
            if(file_name == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 163: Error: Could not allocate the required memory.\n");
+               fprintf(stderr, "list/list_funcs.c Line 174: Error: Could not allocate the required memory.\n");
                exit(1);
            }
             strcpy(file_name, "data/");
@@ -175,21 +179,21 @@ void list_funcs(int argc, char** argv, int mode){
 
            FILE* data_file = fopen(file_name, "rb");
            if(data_file == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 168: Error: Could not allocate the required memory.\n");
+               fprintf(stderr, "list/list_funcs.c Line 182: Error: Could not allocate the required memory.\n");
                exit(1);
            }
 
            int entries;
-           int entry_listed = 0;
+           int entry_listed = 0;        //entries listed for each subject.
            fscanf(count_file, "%d", &entries);
             
            for(int i = 0; i < entries; i++){
                list_p current_list = (list*)malloc(sizeof(list));  //The list on which the structure is to be written on.
                if(current_list == NULL){
-                   fprintf(stderr, "list/list_funcs.c Line 182: Error: could not allocate memory.\n");
+                   fprintf(stderr, "list/list_funcs.c Line 193: Error: could not allocate memory.\n");
                    exit(1);
                }
-            
+                total_entries++;
                 fread(current_list, sizeof(list), 1, data_file);
                 
                 //This is where our local operation starts in. The program will fetch and print results based on 
@@ -205,30 +209,6 @@ void list_funcs(int argc, char** argv, int mode){
                 */
 
                if(fields->number == 4){
-                   if(entry_listed == 0){
-                       FILL(40, '=');
-                       printf("|");
-                       printf("\n");
-                       printf("%-18s: %-20s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
-                       FILL(40, '=');
-                       printf("|");
-                       printf("\n%-40s|\n", " ", " ");
-                   }
-                   entry_listed++;
-                   listed++;
-                   //The difference between two listed is that one is global, and the other one is local.
-                   
-                   FILL(40, '-');
-                   printf("|\n", " ");
-                   printf("[%d]%-37s|\n", listed, " ");
-
-                   for(int j = 1; j < FIELD; j++){
-                       printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
-                   }
-                   printf("%-40s|\n", " ");
-
-               } else if (fields->number >= 0 && fields->number <= 2){
-                   if(strstr(current_list->credit[fields->number], fields->specifier) != NULL){
                         if(entry_listed == 0){
                             FILL(40, '=');
                             printf("|");
@@ -244,24 +224,88 @@ void list_funcs(int argc, char** argv, int mode){
                    
                         FILL(40, '-');
                         printf("|\n", " ");
-                        printf("[%d]%-37s|\n", entry_listed, " ");
+                        printf("[%d]%-37s|\n", listed, " ");
 
                         for(int j = 1; j < FIELD; j++){
-                            printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
+                             printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
                         }
                         printf("%-40s|\n", " ");
-                    }
 
-                    if(mode == called_for_modify || mode == called_for_get || mode == called_for_delete){
-                        //then save the list into the linked list named chain.
-                        if(chain->current)
-                        
+               } else if (fields->number >= 0 && fields->number <= 2){
+                   if(strcasestr(current_list->credit[fields->number], fields->specifier) != NULL){
+                       //In this column, we can assume that the list meets our criteria, therefore, can work on it.
+                       //On first iteration, it will print out the entries.
+                       //On second itertion, it will search for one of the entry.
+
+                       if(!printed_list){
+                            if(entry_listed == 0){
+                                FILL(40, '=');
+                                printf("|");
+                                printf("\n");
+                                printf("%-18s: %-20s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
+                                FILL(40, '=');
+                                printf("|");
+                                printf("\n%-40s|\n", " ", " ");
+                            }
+                            entry_listed++;
+                            listed++;
+                            //The difference between two listed is that one is global, and the other one is local.
+                   
+                            FILL(40, '-');
+                            printf("|\n", " ");
+                            printf("[%d]%-37s|\n", entry_listed, " ");
+
+                            for(int j = 1; j < FIELD; j++){
+                                printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
+                            }
+                            printf("%-40s|\n", " ");
+                       } else {
+                           listed++;
+                           if(index == listed){
+                               redirector[mode-1](current_list);
+                               goto end;
+                            }
+                        } 
                     }
                }
+               total_files++;
            }
-
            free(file_name);
            free(count_name);
         }
+        if(listed == 0){
+            printf("None of the entries matched your search. Please enter properly.\n");
+            return;
+        }
+        if(mode == called_for_list){
+            got_list = true;
+            goto end;
+        }
+
+        if(printed_list == false){
+            printf("(%d)s files listed out of (%d)s files.\n", listed, total_entries);
+            int format = true;
+            printf("You can narrow down the result by specifying more if you want more concised result.\n\n");
+            while(format){
+                printf("Enter the index number for the subject: ");
+                scanf("%d", &index);
+                fflush(stdin);
+
+                if(1 > index){
+                    printf("[The number you entered is too small for the list]");
+                } else if (index > listed){
+                    printf("[The number you entered is too big for the list]");
+                } else {
+                    format = false;
+                }
+            }
+            printed_list = true;
+        }
+        closedir(count_dir);
+        closedir(data_dir);
+
+    }
+
+    end:
     return;
 }

@@ -18,7 +18,7 @@
 
 void write_on_disk(list_p node){
 
-    //The root folder of the program.
+    //The root folder of the program.   
     chdir("..");
 
     int folder_exist = folder_exists(".", "data");

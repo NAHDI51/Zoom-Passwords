@@ -47,13 +47,6 @@ struct creditentials{
     char credit[4][80];
 };
 
-//upon fetching multiple results for the function search, this list will link them so that the structures can be tracked.
-struct list_linked_list{
-    list_p current;
-    list_p next;
-};
-typedef struct list_linked_list linked_list;
-
 
 //The following function declared below are the dedicated help functions.
 void commands_and_works(void);          //breifly describes the standard commands and their destined works.
@@ -83,6 +76,11 @@ void list_funcs(int argc, char** argv, int mode);
 int folder_exists(char* path, char* folder);
 int file_exists(char* path, char* folder);
 
+//additional functions
+void delete_command(list_p node);
+void get_command(list_p node);
+void modify_command(list_p node);
+
 //formatting functions
 void FILL(int quantity, char character);                  //Fills a "quantity" of space with a certain "Character".
 char first_of(char *key);                                 //Returns first character.
@@ -91,7 +89,7 @@ void break_new_line(char **sentence);                     //Breaks the last newl
 char *upper_case(char *sentence);                         //Sentence capped.
 char *caps_first(char *sentence);                         //Caps Locks the first letter of the sentence.
 int does_not_contain_number(char *sentence);              //Checks if the sentence is made of basic numbers
-int does_not_contain_symbol(char *str);              //checks if the sentence is made of any symbol.
+int does_not_contain_symbol(char *str);                   //checks if the sentence is made of any symbol.
 int does_not_contain_letter(char *sentence);              //checks if the sentence is made of any letter.
 int addition_string(char *sentence);                      //The sum of the ASCII values of the string.
 int char_case_compare(char a, char b);                    //Compares two characers, ignoring their cases.
@@ -100,5 +98,6 @@ int has_character(char *sentence, char symbol);           //Checks if a sentence
 void remove_extra_spaces(char *sentence);                 //removes the unncesessary spaces in the middle of a sentence.
 void remove_spaces(char* sentence);                       //Removes every spaces.
 char* underscore(char* sentence);                         //underscores the spaces.
+char* strcasestr(char* haystack, char *needle);           //case insensitive occurence of a certain needle in a haystack.
 
 
