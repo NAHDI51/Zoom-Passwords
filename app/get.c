@@ -1,6 +1,7 @@
 #include "definitions.h"
 
-void delete_command(list_p node){
+void get_command(list_p node){
+    printf("get command.\n");
     printf("reached here.\n");
     return;
 }

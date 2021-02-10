@@ -44,7 +44,7 @@ typedef list* list_p;
 
 //This struct is basically used for storing the structures in the disk.
 struct creditentials{
-    char credit[4][80];
+    char credit[4][60];
 };
 
 

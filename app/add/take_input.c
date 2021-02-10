@@ -88,6 +88,9 @@ void add_take_input(int argc, char **argv)
                 if(strlen(input) == 0){
                     printf("[Please enter something] ");
                     continue;
+                } else if (strlen(input) > 60){
+                    printf("[IT MUST BE UNDER 60 CHARACTERS] ");
+                    continue;
                 }
 
                 if(strcmp(input, "Q") == 0){

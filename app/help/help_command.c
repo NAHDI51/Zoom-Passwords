@@ -15,7 +15,7 @@ void commands_and_works(){
 
 //Prints the brief details of all the main commands.
 void print_instructions(void){
-    printf("Welcome to your password saver program.\n\n");
+    printf("\nWelcome to your password saver program.\n\n");
     printf("The commands available in this program:\n\n");
     commands_and_works();
     printf("Enter \"pass <command_name>\" to use a command.\n");

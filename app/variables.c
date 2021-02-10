@@ -17,8 +17,8 @@ void allocate_FIELDS(void){
     FIELDS[ID] = (char*)malloc(sizeof(char*) * (strlen("ID")+1));
     FIELDS[PASS] = (char*)malloc(sizeof(char*) * (strlen("PASS")+1));
 
-    strcpy(FIELDS[HOST_NAME], "host name");
-    strcpy(FIELDS[SUBJECT_NAME], "subject name");
+    strcpy(FIELDS[HOST_NAME], "HOST NAME");
+    strcpy(FIELDS[SUBJECT_NAME], "SUBJECT NAME");
     strcpy(FIELDS[ID], "ID");
     strcpy(FIELDS[PASS], "PASS");
 }

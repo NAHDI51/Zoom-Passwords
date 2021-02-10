@@ -2,7 +2,7 @@
 #include "../definitions.h"
 #endif
 
-#ifndef _UNISTD_H_
+#ifndef _UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -17,8 +17,6 @@
 char *FIELDS[4];
 
 void list_funcs(int argc, char** argv, int mode){
-    //Since we will work on the main directory most frequently, change the current directory.
-    chdir("..");
 
     void (*redirector[3])(list_p) = {&get_command, &modify_command, &delete_command};
 
@@ -54,6 +52,10 @@ void list_funcs(int argc, char** argv, int mode){
         //These will work as the key specifiers in our operation.
 
     instructions *fields = (instructions*)malloc(sizeof(instructions));
+    if(fields == NULL){
+        printf("list/list_funcs.c Line 56: Error: Could not allocate the list.\n");
+        exit(1);
+    }
 
     if(argc == 2){
         if(mode == called_for_list){
@@ -86,15 +88,25 @@ void list_funcs(int argc, char** argv, int mode){
 
                 //basically what we have done in that column is to fill out the specifiers.
             }
-        } else {
+        } else if(equal_sign != NULL) {
+
             *equal_sign = '\0';
             int length = 0;
 
-            for(int i = 1; *(equal_sign + (i-1)) != '\0'; i++) length++;
-            fields->specifier = (char*)malloc(length+1);
-            for(int i = 1; *(equal_sign + (i-1)) != '\0'; i++){
+            for(int i = 1; *(equal_sign + i) != '\0'; i++){
+                length++;
+            }
+            fields->specifier = (char*)malloc(length+3);
+            if(fields->specifier == NULL){
+                fprintf(stderr, "list/list_funcs.c Line 101: Error: Could not allocate the list.\n");
+                exit(1);
+            }
+
+            int i;
+            for(i = 1; *(equal_sign + i) != '\0'; i++){
                 fields->specifier[i-1] = *(equal_sign+i);
             }
+            fields->specifier[i-1] = '\0';
 
             //Eliminate if the user has entered an invalid input.
             if(strcasecmp(argv[2], "subject name") == 0){
@@ -125,7 +137,7 @@ void list_funcs(int argc, char** argv, int mode){
         DIR* count_dir = opendir("counts");
         DIR* data_dir = opendir("data");
         if(data_dir == NULL || count_dir == NULL){
-            fprintf(stderr, "list/list_funcs.c Line: 129 Error: Could not open the file.\n");
+            fprintf(stderr, "list/list_funcs.c Line: 140 Error: Could not open the file.\n");
             exit(1);
         }
         //Our main work is on the following two directory: count and data.
@@ -140,6 +152,7 @@ void list_funcs(int argc, char** argv, int mode){
         int total_files = 0;        //increment for each file iteration.
 
         int listed = 0;             //increment for each successfully printed list
+        char str_listed[6];         //string converted version of the variable listed.
 
         while((data_read = readdir(data_dir)) != NULL){
             /*algorithm:
@@ -157,7 +170,7 @@ void list_funcs(int argc, char** argv, int mode){
 
            char *count_name = (char*)malloc(strlen(count_read->d_name) + strlen("/counts") + 2);
            if(count_name == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 160: Error: could not allocate the required memory.\n");
+               fprintf(stderr, "list/list_funcs.c Line 173: Error: could not allocate the required memory.\n");
                exit(1);
            }
            strcpy(count_name, "counts/");
@@ -165,13 +178,13 @@ void list_funcs(int argc, char** argv, int mode){
 
            FILE* count_file = fopen(count_name, "r");
            if(count_file == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 168: Error: Could not open the file.\n");
+               fprintf(stderr, "list/list_funcs.c Line 181: Error: Could not open the file.\n");
                exit(1);
            }
 
            char* file_name = (char*)malloc(strlen(data_read->d_name) + 8);
            if(file_name == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 174: Error: Could not allocate the required memory.\n");
+               fprintf(stderr, "list/list_funcs.c Line 187: Error: Could not allocate the required memory.\n");
                exit(1);
            }
             strcpy(file_name, "data/");
@@ -179,7 +192,7 @@ void list_funcs(int argc, char** argv, int mode){
 
            FILE* data_file = fopen(file_name, "rb");
            if(data_file == NULL){
-               fprintf(stderr, "list/list_funcs.c Line 182: Error: Could not allocate the required memory.\n");
+               fprintf(stderr, "list/list_funcs.c Line 195: Error: Could not allocate the required memory.\n");
                exit(1);
            }
 
@@ -190,7 +203,7 @@ void list_funcs(int argc, char** argv, int mode){
            for(int i = 0; i < entries; i++){
                list_p current_list = (list*)malloc(sizeof(list));  //The list on which the structure is to be written on.
                if(current_list == NULL){
-                   fprintf(stderr, "list/list_funcs.c Line 193: Error: could not allocate memory.\n");
+                   fprintf(stderr, "list/list_funcs.c Line 206: Error: could not allocate memory.\n");
                    exit(1);
                }
                 total_entries++;
@@ -210,26 +223,27 @@ void list_funcs(int argc, char** argv, int mode){
 
                if(fields->number == 4){
                         if(entry_listed == 0){
-                            FILL(40, '=');
+                            FILL(60, '=');
                             printf("|");
                             printf("\n");
-                            printf("%-18s: %-20s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
-                            FILL(40, '=');
+                            printf("%-14s: %-44s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
+                            FILL(60, '=');
                             printf("|");
-                            printf("\n%-40s|\n", " ", " ");
+                            printf("\n%-60s|\n", " ", " ");
                         }
                         entry_listed++;
                         listed++;
                         //The difference between two listed is that one is global, and the other one is local.
-                   
-                        FILL(40, '-');
-                        printf("|\n", " ");
-                        printf("[%d]%-37s|\n", listed, " ");
+                        printf("%-5s.....%-50s|\n", itoa(listed, str_listed, 10), " ");
 
                         for(int j = 1; j < FIELD; j++){
-                             printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
+                             printf("%-14s: %-44s|\n", FIELDS[j], current_list->credit[j]);
                         }
-                        printf("%-40s|\n", " ");
+                        printf("%-60s|\n", " ");
+                        if(i != entries -1){                
+                            FILL(60, '-');
+                            printf("|\n");
+                        }
 
                } else if (fields->number >= 0 && fields->number <= 2){
                    if(strcasestr(current_list->credit[fields->number], fields->specifier) != NULL){
@@ -239,26 +253,28 @@ void list_funcs(int argc, char** argv, int mode){
 
                        if(!printed_list){
                             if(entry_listed == 0){
-                                FILL(40, '=');
+                                FILL(60, '=');
                                 printf("|");
                                 printf("\n");
-                                printf("%-18s: %-20s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
-                                FILL(40, '=');
+                                printf("%-14s: %-44s|\n", FIELDS[SUBJECT_NAME], current_list->credit[SUBJECT_NAME]);
+                                FILL(60, '=');
                                 printf("|");
-                                printf("\n%-40s|\n", " ", " ");
+                                printf("\n%-60s|\n", " ", " ");
                             }
                             entry_listed++;
                             listed++;
                             //The difference between two listed is that one is global, and the other one is local.
                    
-                            FILL(40, '-');
-                            printf("|\n", " ");
-                            printf("[%d]%-37s|\n", entry_listed, " ");
+                            printf("%-5s.....%-50s|\n", itoa(listed, str_listed, 10), " ");
 
                             for(int j = 1; j < FIELD; j++){
-                                printf("%-18s: %-20s|\n", FIELDS[j], current_list->credit[j]);
+                                printf("%-14s: %-44s|\n", FIELDS[j], current_list->credit[j]);
                             }
-                            printf("%-40s|\n", " ");
+                            printf("%-60s|\n", " ");
+                            if(i != entries -1){
+                                FILL(60, '-');
+                                printf("|\n");
+                            }
                        } else {
                            listed++;
                            if(index == listed){
@@ -274,7 +290,7 @@ void list_funcs(int argc, char** argv, int mode){
            free(count_name);
         }
         if(listed == 0){
-            printf("None of the entries matched your search. Please enter properly.\n");
+            printf("None of the entries matched your search. Please enter a proper information.\n");
             return;
         }
         if(mode == called_for_list){

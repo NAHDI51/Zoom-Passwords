@@ -2,10 +2,26 @@
 #include "definitions.h"
 #endif
 
+#ifndef _UNISTD_H
+#include <unistd.h>
+#endif
+
 int main(int argc, char **argv)
 {
     //First and foremost, call the global variable allocator functions.
     allocate_FIELDS();
+
+    //changing the current directory to the path of the program.
+    char *env = getenv("pass");
+    if(env == NULL){
+        fprintf(stderr, "\nPlease add the root directory of the application with the name \"zoom\" as\n");
+        fprintf(stderr, "an environment variable before using this program.\n");
+        exit(1);
+    }
+    int x = chdir(env);
+    if(x != 0){
+        printf("code/main.c Line 19; Error: Could not change the directory.\n");
+    }
 
     //Copy out the argv arguments in a multidimensional array. Allocate a multidimensional string with the corresponding 
     //size of each argv[i].
@@ -35,6 +51,8 @@ int main(int argc, char **argv)
             list_funcs(argc, copy_argv, called_for_get);
         } else if (strcasecmp(*(copy_argv+1), "modify") == 0){
             list_funcs(argc, copy_argv, called_for_modify);
+        } else if (strcasecmp(*(copy_argv+1), "delete") == 0){
+            list_funcs(argc, copy_argv, called_for_delete);
         } else {
             printf("Error: command \"%s\" not found. Please use a valid command.\n", *(copy_argv+1));
         }

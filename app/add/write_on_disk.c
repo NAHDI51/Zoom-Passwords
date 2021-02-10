@@ -10,16 +10,13 @@
 #include <dirent.h>
 #endif
 
-#ifndef _UNISTD_H_
+#ifndef _UNISTD_H
 #include <unistd.h>
 #endif
 
 //After taking the input from the user, This source code saves the list on the disk properly.
 
 void write_on_disk(list_p node){
-
-    //The root folder of the program.   
-    chdir("..");
 
     int folder_exist = folder_exists(".", "data");
     if(!folder_exist){

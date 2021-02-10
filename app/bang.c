@@ -4,7 +4,7 @@
 int main()
 {
     int x = chdir("..");
-    if(x == 1){
+    if(x != 0){
         printf("Couldnt change path.\n");
     }
     char path[100];

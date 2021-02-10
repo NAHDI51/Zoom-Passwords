@@ -20,6 +20,7 @@ void add_command_details(){
             printf("=>It must not contain any letters or symbols.\n\n");
             printf("Pass of the meeting: The password given alongside the meeting ID.\n");
             printf("=>it may contain anything, including symbols, numbers.\n\n\n");
+            printf("Note: The name and the subject must not contain more than 60 letters.\n\n");
             printf("#What if the name of the subject I entered already exists?\n");
             printf("=>It will extend and both will appear chronologically. But be careful\nthat you cannot add more than 10");
             printf("entries in a given content or subject.\n\n");
