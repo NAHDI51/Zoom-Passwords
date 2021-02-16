@@ -18,7 +18,7 @@ char *FIELDS[4];
 
 void list_funcs(int argc, char** argv, int mode){
 
-    void (*redirector[3])(list_p) = {&get_command, &modify_command, &delete_command};
+    void (*redirector[3])(list_p, int) = {&get_command, &modify_command, &delete_command};
 
     int folder_exist = folder_exists(".", "counts");
     if(!folder_exist){
@@ -278,7 +278,12 @@ void list_funcs(int argc, char** argv, int mode){
                        } else {
                            listed++;
                            if(index == listed){
-                               redirector[mode-1](current_list);
+                               free(file_name);
+                               free(count_name);
+                               closedir(count_dir);
+                               closedir(data_dir);
+                               list_specific(current_list);
+                               redirector[mode-1](current_list, mode);
                                goto end;
                             }
                         } 
@@ -294,6 +299,8 @@ void list_funcs(int argc, char** argv, int mode){
             return;
         }
         if(mode == called_for_list){
+            closedir(count_dir);
+            closedir(data_dir);
             got_list = true;
             goto end;
         }
@@ -307,10 +314,8 @@ void list_funcs(int argc, char** argv, int mode){
                 scanf("%d", &index);
                 fflush(stdin);
 
-                if(1 > index){
-                    printf("[The number you entered is too small for the list]");
-                } else if (index > listed){
-                    printf("[The number you entered is too big for the list]");
+                if(1 > index || index > listed){
+                    printf("[INVALID INPUT]");
                 } else {
                     format = false;
                 }
@@ -324,4 +329,21 @@ void list_funcs(int argc, char** argv, int mode){
 
     end:
     return;
+}
+
+//lists a specific list
+void list_specific(list_p node){
+    printf("\n");
+    FILL(60, '=');
+    printf("|\n");
+    printf("%-15s%-45s|\n", FIELDS[SUBJECT_NAME], node->credit[SUBJECT_NAME]);
+    FILL(60, '=');
+    printf("|\n", " ");
+
+    for(int i = 1; i < 4; i++){
+        printf("%-15s%-45s|\n", FIELDS[i], node->credit[i]);
+    }
+    printf("%-60|\n", " ");
+    FILL(60, '=');
+    printf("|\n\n");
 }

@@ -73,13 +73,14 @@ list_p allocate_LIST(void);
 
 //functions for listing the functions
 void list_funcs(int argc, char** argv, int mode);
+void list_specific(list_p node);
 int folder_exists(char* path, char* folder);
 int file_exists(char* path, char* folder);
 
 //additional functions
-void delete_command(list_p node);
-void get_command(list_p node);
-void modify_command(list_p node);
+void delete_command(list_p node, int mode);
+void get_command(list_p node, int mode);
+void modify_command(list_p node, int mode);
 
 //formatting functions
 void FILL(int quantity, char character);                  //Fills a "quantity" of space with a certain "Character".

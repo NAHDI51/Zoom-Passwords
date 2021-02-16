@@ -10,17 +10,19 @@ int main(int argc, char **argv)
 {
     //First and foremost, call the global variable allocator functions.
     allocate_FIELDS();
-
-    //changing the current directory to the path of the program.
-    char *env = getenv("pass");
-    if(env == NULL){
-        fprintf(stderr, "\nPlease add the root directory of the application with the name \"zoom\" as\n");
-        fprintf(stderr, "an environment variable before using this program.\n");
-        exit(1);
+   
+    int occured = 0;
+    int i;
+    for(i = strlen(argv[0]); occured != 2; i--){
+        if(argv[0][i] == 92 || argv[0][i] == '/')
+            occured++;
     }
-    int x = chdir(env);
-    if(x != 0){
-        printf("code/main.c Line 19; Error: Could not change the directory.\n");
+    argv[0][i+1] = '\0';
+
+    int not_ok = chdir(argv[0]);
+    if(not_ok){
+        printf("Error.\n");
+        exit(1);
     }
 
     //Copy out the argv arguments in a multidimensional array. Allocate a multidimensional string with the corresponding 
